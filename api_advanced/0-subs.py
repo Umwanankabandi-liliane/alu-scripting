@@ -1,21 +1,16 @@
 #!/usr/bin/python3
-""" Exporting csv files"""
-import json
+"""0-subs.py"""
+
 import requests
-import sys
 
 
 def number_of_subscribers(subreddit):
-    """Read reddit API and return number subscribers """
-    username = 'ledbag123'
-    password = 'Reddit72'
-    user_pass_dict = {'user': username, 'passwd': password, 'api_type': 'json'}
-    headers = {'user-agent': '/u/ledbag123 API Python for Holberton School'}
-    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
-    client = requests.session()
-    client.headers = headers
-    r = client.get(url, allow_redirects=False)
-    if r.status_code == 200:
-        return (r.json()["data"]["subscribers"])
+    """Reddit subscribers"""
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    headers = {"User-Agent": "My-User-Agent"}
+
+    response = requests.get(url, headers=headers, allow_redirects=False)
+    if response.status_code != 200:
+        return 0
     else:
-        return(0)
+        return response.json().get("data").get("subscribers")
