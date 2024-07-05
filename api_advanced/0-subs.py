@@ -1,29 +1,21 @@
 #!/usr/bin/python3
-"""0-subs.py"""
-
+""" Exporting csv files"""
+import json
 import requests
+import sys
+
 
 def number_of_subscribers(subreddit):
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {"User-Agent": "My-User-Agent"}
-
-    try:
-        response = requests.get(url, headers=headers, timeout=10, allow_redirects=False)
-        
-        # Check if request was successful (status code 200)
-        if response.status_code == 200:
-            data = response.json().get("data", {})
-            subscribers = data.get("subscribers") if data else None
-            
-            if subscribers is not None:
-                return subscribers
-            else:
-                print(f"No subscribers data found for subreddit: {subreddit}")
-                return 0
-        else:
-            print(f"Error fetching subreddit data: Status Code {response.status_code}")
-            return 0
-    
-    except requests.exceptions.RequestException as e:
-        print(f"Request Exception: {e}")
-        return 0
+    """Read reddit API and return number subscribers """
+    username = 'ledbag123'
+    password = 'Reddit72'
+    user_pass_dict = {'user': username, 'passwd': password, 'api_type': 'json'}
+    headers = {'user-agent': '/u/ledbag123 API Python for Holberton School'}
+    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
+    client = requests.session()
+    client.headers = headers
+    r = client.get(url, allow_redirects=False)
+    if r.status_code == 200:
+        return (r.json()["data"]["subscribers"])
+    else:
+        return(0)
